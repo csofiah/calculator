@@ -1,6 +1,7 @@
 package com.sanitas.calculator.service;
 
 import com.sanitas.calculator.model.OperationModel;
+import io.corp.calculator.TracerAPI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class OperationImplTest {
     private OperationImpl underTest;
+    private TracerAPI tracerAPI;
     OperationModel operationModel1, operationModelDecimals, operationModelZero;
     OperationModel operationModelEmpty, operationModelSubstract;
 
@@ -35,7 +37,7 @@ class OperationImplTest {
 
         operationModelEmpty = OperationModel.builder().build();
 
-        underTest = new OperationImpl();
+        underTest = new OperationImpl(tracerAPI);
     }
 
     @Test
