@@ -29,7 +29,7 @@ public class OperationImpl implements Operation{
                     .build();
 
         } catch (Exception ex) {
-            return null;
+            throw OperationException.Type.ERROR_OPERATION_SUBSTRACT.build(ex);
         }
     }
 
