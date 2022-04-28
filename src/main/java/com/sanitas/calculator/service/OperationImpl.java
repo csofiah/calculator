@@ -2,17 +2,18 @@ package com.sanitas.calculator.service;
 
 import com.sanitas.calculator.model.OperationModel;
 import io.corp.calculator.TracerAPI;
+import io.corp.calculator.TracerImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 
-@RequiredArgsConstructor
 @Service
 public class OperationImpl implements Operation {
 
-    @Qualifier("TracerAPIImpl")
-    private final TracerAPIImpl tracerAPI;
+    @Autowired
+    private TracerImpl tracerAPI;
 
 
     @Override
@@ -28,7 +29,7 @@ public class OperationImpl implements Operation {
     }
 
     @Override
-    public OperationModel substract(OperationModel operationModel) {
+    public OperationModel subtract(OperationModel operationModel) {
         var result = operationModel.getNumber1() - operationModel.getNumber2();
         tracerAPI.trace(result);
 

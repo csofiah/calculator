@@ -32,4 +32,11 @@ public class OperationModelMocks {
                 .build();
     }
 
+    public static OperationModel getOperationModelWithFirstNumberIsLessThanSecondNumber(){
+        return  OperationModel.builder()
+                .number1(5d)
+                .number2(10d)
+                .build();
+    }
+
 }

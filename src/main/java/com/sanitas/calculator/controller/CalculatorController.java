@@ -29,10 +29,10 @@ public class CalculatorController {
         }
     }
 
-    @PostMapping(value = "/substract")
-    public OperationModel substract(@RequestBody OperationModel operationModel) {
+    @PostMapping(value = "/subtract")
+    public OperationModel subtract(@RequestBody OperationModel operationModel) {
         try {
-            return operation.substract(operationModel);
+            return operation.subtract(operationModel);
         } catch (Exception ex) {
             log.error("Exception {}", ex.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error del servidor");

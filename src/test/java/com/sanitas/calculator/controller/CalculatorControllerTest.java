@@ -86,11 +86,11 @@ class CalculatorControllerTest {
                 .result(-1d)
                 .build();
 
-        when(operation.substract(operationModel1)).thenReturn(opExpected);
-        var result = underTest.substract(operationModel1);
+        when(operation.subtract(operationModel1)).thenReturn(opExpected);
+        var result = underTest.subtract(operationModel1);
 
         assertEquals(opExpected.getResult(), result.getResult());
-        verify(operation, times(1)).substract(operationModel1);
+        verify(operation, times(1)).subtract(operationModel1);
     }
 
     @Test
@@ -98,11 +98,11 @@ class CalculatorControllerTest {
         OperationModel opExpected = operationModelSubstract.toBuilder()
                 .result(10d)
                 .build();
-        when(operation.substract(operationModelSubstract)).thenReturn(opExpected);
-        var result = underTest.substract(operationModelSubstract);
+        when(operation.subtract(operationModelSubstract)).thenReturn(opExpected);
+        var result = underTest.subtract(operationModelSubstract);
 
         assertEquals(opExpected.getResult(), result.getResult());
-        verify(operation, times(1)).substract(operationModelSubstract);
+        verify(operation, times(1)).subtract(operationModelSubstract);
     }
 
     @Test
@@ -110,11 +110,11 @@ class CalculatorControllerTest {
         OperationModel opExpected = operationModelZero.toBuilder()
                 .result(5d)
                 .build();
-        when(operation.substract(operationModelZero)).thenReturn(opExpected);
-        var result = underTest.substract(operationModelZero);
+        when(operation.subtract(operationModelZero)).thenReturn(opExpected);
+        var result = underTest.subtract(operationModelZero);
 
         assertEquals(opExpected.getResult(), result.getResult());
-        verify(operation, times(1)).substract(operationModelZero);
+        verify(operation, times(1)).subtract(operationModelZero);
     }
 
 }

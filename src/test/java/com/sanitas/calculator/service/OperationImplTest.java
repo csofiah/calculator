@@ -2,53 +2,35 @@ package com.sanitas.calculator.service;
 
 import com.sanitas.calculator.mocks.OperationModelMocks;
 import com.sanitas.calculator.model.OperationModel;
+import io.corp.calculator.TracerImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.doNothing;
 
+
 class OperationImplTest {
+
+    @InjectMocks
     private OperationImpl underTest;
-    private TracerAPIImpl tracerAPI;
-    OperationModel operationModel1, operationModelDecimals, operationModelZero;
-    OperationModel operationModelEmpty, operationModelSubstract;
+
+    @Mock
+    private TracerImpl tracerAPI;
 
     @BeforeEach
     void setup() {
 
-        operationModel1 = OperationModel.builder()
-                .number1(1d)
-                .number2(2d)
-                .build();
-
-        operationModelDecimals = OperationModel.builder()
-                .number1(1.5d)
-                .number2(1.5d)
-                .build();
-
-        operationModelZero = OperationModel.builder()
-                .number1(5d)
-                .number2(0d)
-                .build();
-
-        operationModelSubstract = OperationModel.builder()
-                .number1(15d)
-                .number2(5d)
-                .build();
-
-        operationModelEmpty = OperationModel.builder().build();
-
-        tracerAPI = Mockito.mock(TracerAPIImpl.class);
-        underTest = new OperationImpl(tracerAPI);
-
+        MockitoAnnotations.openMocks(this);
         doNothing().when(tracerAPI).trace(anyDouble());
     }
 
-    @DisplayName("add operation successful when OperationModel has 2 Numbers Without Decimal")
+    @DisplayName("add operation successful when OperationModel has 2 numbers without decimal")
     @Test
     void addWithOperationModelHas2NumberWithoutDecimalSuccessfulTest() {
 
@@ -62,7 +44,7 @@ class OperationImplTest {
 
     }
 
-    @DisplayName("add operation successful when OperationModel has 2 Numbers With Decimals")
+    @DisplayName("add operation successful when OperationModel has 2 numbers with decimals")
     @Test
     void addWhenOperationModelHasTwoNumbersWithDecimalSuccessfulTest() {
         OperationModel opExpected = OperationModelMocks.getOperationModelWith2NumbersWithDecimal().toBuilder()
@@ -74,47 +56,37 @@ class OperationImplTest {
 
     }
 
-    @DisplayName("add operation successful when OperationModel has 2 Numbers With Decimals")
+    @DisplayName("add operation successful when OperationModel has one number equal zero")
     @Test
     void addWhenOperationModelHasOneNumberEqualZeroIsSuccessfulTest() {
         OperationModel opExpected = OperationModelMocks.getOperationModelWith1NumberZero().toBuilder()
                 .result(5d)
                 .build();
-        var result = underTest.add(operationModelZero);
+        var result = underTest.add(OperationModelMocks.getOperationModelWith1NumberZero());
 
         assertEquals(opExpected.getResult(), result.getResult());
 
     }
 
-    @DisplayName("add operation successful when OperationModel has 2 Numbers With Decimals")
+    @DisplayName("add operation successful when With First Number Greater Than Second Number")
     @Test
-    void substractWhenOperationIsSuccessfulTest() {
+    void subtractWithFirstNumberGreaterThanSecondNumberIsSuccessfulTest() {
         OperationModel opExpected = OperationModelMocks.getOperationModelWithFirstNumberGreaterThanSecondNumber().toBuilder()
-                .result(-1d)
-                .build();
-        var result = underTest.substract(OperationModelMocks.getOperationModelWithFirstNumberGreaterThanSecondNumber());
-
-        assertEquals(opExpected.getResult(), result.getResult());
-
-    }
-
-    @Test
-    void substractWhenNumberOneIsBiggerThanNumberTwoIsSuccessfulTest() {
-        OperationModel opExpected = operationModelSubstract.toBuilder()
                 .result(10d)
                 .build();
-        var result = underTest.substract(operationModelSubstract);
+        var result = underTest.subtract(OperationModelMocks.getOperationModelWithFirstNumberGreaterThanSecondNumber());
 
         assertEquals(opExpected.getResult(), result.getResult());
 
     }
 
+    @DisplayName("add operation successful when With First Number is less Than Second Number")
     @Test
-    void substractWhenOperationModelHasZeroIsSuccessfulTest() {
-        OperationModel opExpected = operationModelZero.toBuilder()
-                .result(5d)
+    void subtractWithFirstNumberIsLessThanSecondNumberIsSuccessfulTest() {
+        OperationModel opExpected = OperationModelMocks.getOperationModelWithFirstNumberIsLessThanSecondNumber().toBuilder()
+                .result(-5d)
                 .build();
-        var result = underTest.substract(operationModelZero);
+        var result = underTest.subtract(OperationModelMocks.getOperationModelWithFirstNumberIsLessThanSecondNumber());
 
         assertEquals(opExpected.getResult(), result.getResult());
 
