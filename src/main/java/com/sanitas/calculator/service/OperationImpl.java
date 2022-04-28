@@ -2,19 +2,16 @@ package com.sanitas.calculator.service;
 
 import com.sanitas.calculator.model.OperationModel;
 import io.corp.calculator.TracerAPI;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
-//@NoArgsConstructor
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class OperationImpl implements Operation {
 
     private final TracerAPI tracerAPI;
 
-    public OperationImpl(TracerAPI tracerAPI) {
-        this.tracerAPI = tracerAPI;
-    }
 
     @Override
     public OperationModel add(OperationModel operationModel) {
