@@ -1,8 +1,10 @@
 package com.sanitas.calculator.controller;
 
+import com.sanitas.calculator.mocks.OperationModelMocks;
 import com.sanitas.calculator.model.OperationModel;
 import com.sanitas.calculator.service.Operation;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -13,108 +15,99 @@ class CalculatorControllerTest {
 
     private CalculatorController underTest;
     private Operation operation;
-    OperationModel operationModel1, operationModelDecimals, operationModelZero;
-    OperationModel operationModelEmpty, operationModelSubstract;
 
     @BeforeEach
     void setUp() {
         operation = Mockito.mock(Operation.class);
         underTest = new CalculatorController(operation);
 
-        operationModel1 = OperationModel.builder()
-                .number1(1d)
-                .number2(2d)
-                .build();
-        operationModelDecimals = OperationModel.builder()
-                .number1(1.5d)
-                .number2(1.5d)
-                .build();
-
-        operationModelZero = OperationModel.builder()
-                .number1(5d)
-                .number2(0d)
-                .build();
-        operationModelEmpty = OperationModel.builder().build();
-
-        operationModelSubstract = OperationModel.builder()
-                .number1(15d)
-                .number2(5d)
-                .build();
     }
 
+    @DisplayName("add operation successful when OperationModel has 2 numbers with decimals")
     @Test
-    void addWhenOperationIsSuccessful() {
-        OperationModel opExpected = operationModel1.toBuilder()
+    void addWhenOperationModelHasTwoNumbersWithDecimalIsSuccessful() {
+        OperationModel operationModelWithoutDecimals= OperationModelMocks.getOperationModelWith2NumbersWithDecimal();
+        OperationModel opExpected = operationModelWithoutDecimals.toBuilder()
                 .result(3d)
                 .build();
 
-        when(operation.add(operationModel1)).thenReturn(opExpected);
-        var result = underTest.add(operationModel1);
+        when(operation.add(operationModelWithoutDecimals)).thenReturn(opExpected);
+        var result = underTest.add(operationModelWithoutDecimals);
 
         assertEquals(opExpected.getResult(), result.getResult());
-        verify(operation, times(1)).add(operationModel1);
+        verify(operation, times(1)).add(operationModelWithoutDecimals);
     }
 
+    @DisplayName("add operation successful when OperationModel has 2 numbers with decimals")
     @Test
     void addWhenOperationModelHasTwoDecimalNumbersIsSuccessfulTest() {
-        OperationModel opExpected = operationModelDecimals.toBuilder()
+        OperationModel operationModelWithDecimals= OperationModelMocks.getOperationModelWith2NumbersWithDecimal();
+        OperationModel opExpected = operationModelWithDecimals.toBuilder()
                 .result(3d)
                 .build();
-        when(operation.add(operationModelDecimals)).thenReturn(opExpected);
-        var result = underTest.add(operationModelDecimals);
+        when(operation.add(operationModelWithDecimals)).thenReturn(opExpected);
+        var result = underTest.add(operationModelWithDecimals);
 
         assertEquals(opExpected.getResult(), result.getResult());
-        verify(operation, times(1)).add(operationModelDecimals);
+        verify(operation, times(1)).add(operationModelWithDecimals);
     }
 
+    @DisplayName("add operation successful when OperationModel has one number equal zero")
     @Test
-    void addWhenOperationModelIsEmptySuccessfulTest() {
-        OperationModel opExpected = operationModelDecimals.toBuilder()
-                .result(0d)
+    void addWhenOperationModelHasOneNumberEqualZeroIsSuccessfulTest() {
+        OperationModel operationModelWithNumberZero= OperationModelMocks.getOperationModelWith1NumberZero();
+        OperationModel opExpected = operationModelWithNumberZero.toBuilder()
+                .result(3d)
                 .build();
-        when(operation.add(operationModelEmpty)).thenReturn(opExpected);
-        var result = underTest.add(operationModelEmpty);
+        when(operation.add(operationModelWithNumberZero)).thenReturn(opExpected);
+        var result = underTest.add(operationModelWithNumberZero);
 
         assertEquals(opExpected.getResult(), result.getResult());
-        verify(operation, times(1)).add(operationModelEmpty);
+
     }
 
-
+    @DisplayName("subtract operation successful when With First Number Greater Than Second Number")
     @Test
-    void substractWhenOperationIsSuccessful() {
-        OperationModel opExpected = operationModel1.toBuilder()
-                .result(-1d)
-                .build();
-
-        when(operation.subtract(operationModel1)).thenReturn(opExpected);
-        var result = underTest.subtract(operationModel1);
-
-        assertEquals(opExpected.getResult(), result.getResult());
-        verify(operation, times(1)).subtract(operationModel1);
-    }
-
-    @Test
-    void substractWhenNumberOneIsBiggerThanNumberTwoIsSuccessfulTest() {
-        OperationModel opExpected = operationModelSubstract.toBuilder()
+    void subtractWithFirstNumberGreaterThanSecondNumberIsSuccessfulTest() {
+        OperationModel operationModelWithFirstNumberGreaterThanSecondNumber= OperationModelMocks.getOperationModelWithFirstNumberGreaterThanSecondNumber();
+        OperationModel opExpected = operationModelWithFirstNumberGreaterThanSecondNumber.toBuilder()
                 .result(10d)
                 .build();
-        when(operation.subtract(operationModelSubstract)).thenReturn(opExpected);
-        var result = underTest.subtract(operationModelSubstract);
+        when(operation.subtract(operationModelWithFirstNumberGreaterThanSecondNumber)).thenReturn(opExpected);
+        var result = underTest.subtract(operationModelWithFirstNumberGreaterThanSecondNumber);
 
         assertEquals(opExpected.getResult(), result.getResult());
-        verify(operation, times(1)).subtract(operationModelSubstract);
+        verify(operation, times(1)).subtract(operationModelWithFirstNumberGreaterThanSecondNumber);
     }
 
+    @DisplayName("subtract operation successful when With First Number is less Than Second Number")
     @Test
-    void substractWhenOperationModelHasZeroIsSuccessfulTest() {
-        OperationModel opExpected = operationModelZero.toBuilder()
-                .result(5d)
+    void subtractWithFirstNumberIsLessThanSecondNumberIsSuccessfulTest() {
+        OperationModel operationModelWithFirstNumberIsLessThanSecondNumber= OperationModelMocks.getOperationModelWithFirstNumberIsLessThanSecondNumber();
+
+        OperationModel opExpected = operationModelWithFirstNumberIsLessThanSecondNumber.toBuilder()
+                .result(10d)
                 .build();
-        when(operation.subtract(operationModelZero)).thenReturn(opExpected);
-        var result = underTest.subtract(operationModelZero);
+        when(operation.subtract(operationModelWithFirstNumberIsLessThanSecondNumber)).thenReturn(opExpected);
+        var result = underTest.subtract(operationModelWithFirstNumberIsLessThanSecondNumber);
 
         assertEquals(opExpected.getResult(), result.getResult());
-        verify(operation, times(1)).subtract(operationModelZero);
+        verify(operation, times(1)).subtract(operationModelWithFirstNumberIsLessThanSecondNumber);
+    }
+
+    @DisplayName("subtract operation successful when With First Number is less Than Second Number")
+    @Test
+    void subtractWhenOperationModelHasZeroIsSuccessfulTest() {
+        OperationModel operationModelWithHasZero= OperationModelMocks.getOperationModelWith1NumberZero();
+
+        OperationModel opExpected = operationModelWithHasZero.toBuilder()
+                .result(5d)
+                .build();
+        when(operation.subtract(operationModelWithHasZero)).thenReturn(opExpected);
+        var result = underTest.subtract(operationModelWithHasZero);
+
+        assertEquals(opExpected.getResult(), result.getResult());
+        verify(operation, times(1)).subtract(operationModelWithHasZero);
     }
 
 }
