@@ -1,7 +1,7 @@
 # calculator-rest-api
 This is an example of a basic Calculator exposed as Rest Api using SpringBoot and Maven
 
-##STEPS FOR COMPILE THE PROJECT 
+## STEPS FOR COMPILE THE PROJECT 
 
 1.First you must register the external jar called tracer.jar. 
 Please open the terminal inside the folder "libs" of the project and then execute this command:
