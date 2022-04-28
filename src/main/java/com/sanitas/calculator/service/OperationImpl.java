@@ -1,11 +1,8 @@
 package com.sanitas.calculator.service;
 
 import com.sanitas.calculator.model.OperationModel;
-import io.corp.calculator.TracerAPI;
 import io.corp.calculator.TracerImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 

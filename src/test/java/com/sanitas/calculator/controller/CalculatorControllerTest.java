@@ -7,8 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.web.server.ResponseStatusException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class CalculatorControllerTest {
@@ -63,7 +64,24 @@ class CalculatorControllerTest {
         var result = underTest.add(operationModelWithNumberZero);
 
         assertEquals(opExpected.getResult(), result.getResult());
+        verify(operation, times(1)).add(operationModelWithNumberZero);
+    }
 
+    @DisplayName("add when the operation throw an exception")
+    @Test
+    void addWhenThrowException(){
+
+        OperationModel operationModelWithHasZero= OperationModelMocks.getOperationModelWith1NumberZero();
+        OperationModel result = null;
+        try{
+            when(operation.add(operationModelWithHasZero)).thenThrow(ResponseStatusException.class);
+            result = underTest.add(operationModelWithHasZero);
+            fail("Expected exception");
+        }catch(ResponseStatusException e){
+            assertEquals("500 INTERNAL_SERVER_ERROR \"Error del servidor\"", e.getMessage());
+        }
+        assertNull(result);
+        verify(operation, times(1)).add(operationModelWithHasZero);
     }
 
     @DisplayName("subtract operation successful when With First Number Greater Than Second Number")
@@ -107,6 +125,23 @@ class CalculatorControllerTest {
         var result = underTest.subtract(operationModelWithHasZero);
 
         assertEquals(opExpected.getResult(), result.getResult());
+        verify(operation, times(1)).subtract(operationModelWithHasZero);
+    }
+
+    @DisplayName("subtract when the operation throw an exception")
+    @Test
+    void subtractWhenThrowException(){
+
+        OperationModel operationModelWithHasZero= OperationModelMocks.getOperationModelWith1NumberZero();
+        OperationModel result = null;
+        try{
+            when(operation.subtract(operationModelWithHasZero)).thenThrow(ResponseStatusException.class);
+            result = underTest.subtract(operationModelWithHasZero);
+            fail("Expected exception");
+        }catch(ResponseStatusException e){
+            assertEquals("500 INTERNAL_SERVER_ERROR \"Error del servidor\"", e.getMessage());
+        }
+        assertNull(result);
         verify(operation, times(1)).subtract(operationModelWithHasZero);
     }
 

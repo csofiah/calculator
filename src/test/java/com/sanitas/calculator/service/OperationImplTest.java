@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyDouble;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.*;
 
 
 class OperationImplTest {
@@ -40,6 +40,7 @@ class OperationImplTest {
         var result = underTest.add(OperationModelMocks.getOperationModelHas2NumberWithoutDecimal());
 
         assertEquals(opExpected.getResult(), result.getResult());
+        verify(tracerAPI, times(1)).trace(anyDouble());
 
     }
 
@@ -53,7 +54,7 @@ class OperationImplTest {
         var result = underTest.add(OperationModelMocks.getOperationModelWith2NumbersWithDecimal());
 
         assertEquals(opExpected.getResult(), result.getResult());
-
+        verify(tracerAPI, times(1)).trace(anyDouble());
     }
 
     @DisplayName("add operation successful when OperationModel has one number equal zero")
@@ -66,7 +67,7 @@ class OperationImplTest {
         var result = underTest.add(OperationModelMocks.getOperationModelWith1NumberZero());
 
         assertEquals(opExpected.getResult(), result.getResult());
-
+        verify(tracerAPI, times(1)).trace(anyDouble());
     }
 
     @DisplayName("subtract operation successful when With First Number Greater Than Second Number")
@@ -79,7 +80,7 @@ class OperationImplTest {
         var result = underTest.subtract(OperationModelMocks.getOperationModelWithFirstNumberGreaterThanSecondNumber());
 
         assertEquals(opExpected.getResult(), result.getResult());
-
+        verify(tracerAPI, times(1)).trace(anyDouble());
     }
 
     @DisplayName("subtract operation successful when With First Number is less Than Second Number")
@@ -92,7 +93,7 @@ class OperationImplTest {
         var result = underTest.subtract(OperationModelMocks.getOperationModelWithFirstNumberIsLessThanSecondNumber());
 
         assertEquals(opExpected.getResult(), result.getResult());
-
+        verify(tracerAPI, times(1)).trace(anyDouble());
     }
 
 
