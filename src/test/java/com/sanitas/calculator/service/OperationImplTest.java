@@ -1,11 +1,15 @@
 package com.sanitas.calculator.service;
 
+import com.sanitas.calculator.mocks.OperationModelMocks;
 import com.sanitas.calculator.model.OperationModel;
 import io.corp.calculator.TracerAPI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.Mockito.doNothing;
 
 class OperationImplTest {
     private OperationImpl underTest;
@@ -15,6 +19,7 @@ class OperationImplTest {
 
     @BeforeEach
     void setup() {
+
         operationModel1 = OperationModel.builder()
                 .number1(1d)
                 .number2(2d)
@@ -37,15 +42,20 @@ class OperationImplTest {
 
         operationModelEmpty = OperationModel.builder().build();
 
+        tracerAPI = Mockito.mock(TracerAPI.class);
         underTest = new OperationImpl(tracerAPI);
+
+        doNothing().when(tracerAPI).trace(anyDouble());
     }
 
     @Test
     void addWhenOperationIsSuccessfulTest() {
-        OperationModel opExpected = operationModel1.toBuilder()
+
+        OperationModel opExpected = OperationModelMocks.getOperationModelWith2NumberWithoutDecimal().toBuilder()
                 .result(3d)
                 .build();
-        var result = underTest.add(operationModel1);
+
+        var result = underTest.add(OperationModelMocks.getOperationModelWith2NumberWithoutDecimal());
 
         assertEquals(opExpected.getResult(), result.getResult());
 
