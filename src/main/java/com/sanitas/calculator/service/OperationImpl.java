@@ -3,6 +3,7 @@ package com.sanitas.calculator.service;
 import com.sanitas.calculator.model.OperationModel;
 import io.corp.calculator.TracerAPI;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 
@@ -10,7 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class OperationImpl implements Operation {
 
-    private final TracerAPI tracerAPI;
+    @Qualifier("TracerAPIImpl")
+    private final TracerAPIImpl tracerAPI;
 
 
     @Override

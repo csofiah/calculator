@@ -2,8 +2,8 @@ package com.sanitas.calculator.service;
 
 import com.sanitas.calculator.mocks.OperationModelMocks;
 import com.sanitas.calculator.model.OperationModel;
-import io.corp.calculator.TracerAPI;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.doNothing;
 
 class OperationImplTest {
     private OperationImpl underTest;
-    private TracerAPI tracerAPI;
+    private TracerAPIImpl tracerAPI;
     OperationModel operationModel1, operationModelDecimals, operationModelZero;
     OperationModel operationModelEmpty, operationModelSubstract;
 
@@ -42,40 +42,42 @@ class OperationImplTest {
 
         operationModelEmpty = OperationModel.builder().build();
 
-        tracerAPI = Mockito.mock(TracerAPI.class);
+        tracerAPI = Mockito.mock(TracerAPIImpl.class);
         underTest = new OperationImpl(tracerAPI);
 
         doNothing().when(tracerAPI).trace(anyDouble());
     }
 
+    @DisplayName("add operation successful when OperationModel has 2 Numbers Without Decimal")
     @Test
-    void addWhenOperationIsSuccessfulTest() {
+    void addWithOperationModelHas2NumberWithoutDecimalSuccessfulTest() {
 
-        OperationModel opExpected = OperationModelMocks.getOperationModelWith2NumberWithoutDecimal().toBuilder()
+        OperationModel opExpected = OperationModelMocks.getOperationModelHas2NumberWithoutDecimal().toBuilder()
                 .result(3d)
                 .build();
 
-        var result = underTest.add(OperationModelMocks.getOperationModelWith2NumberWithoutDecimal());
+        var result = underTest.add(OperationModelMocks.getOperationModelHas2NumberWithoutDecimal());
 
         assertEquals(opExpected.getResult(), result.getResult());
 
     }
 
+    @DisplayName("add operation successful when OperationModel has 2 Numbers With Decimals")
     @Test
-    void addWhenOperationModelHasTwoDecimalNumbersIsSuccessfulTest() {
-        OperationModel opExpected = operationModelDecimals.toBuilder()
+    void addWhenOperationModelHasTwoNumbersWithDecimalSuccessfulTest() {
+        OperationModel opExpected = OperationModelMocks.getOperationModelWith2NumbersWithDecimal().toBuilder()
                 .result(3d)
                 .build();
-        var result = underTest.add(operationModelDecimals);
+        var result = underTest.add(OperationModelMocks.getOperationModelWith2NumbersWithDecimal());
 
         assertEquals(opExpected.getResult(), result.getResult());
 
     }
 
-
+    @DisplayName("add operation successful when OperationModel has 2 Numbers With Decimals")
     @Test
-    void addWhenOperationModelHasZeroIsSuccessfulTest() {
-        OperationModel opExpected = operationModelZero.toBuilder()
+    void addWhenOperationModelHasOneNumberEqualZeroIsSuccessfulTest() {
+        OperationModel opExpected = OperationModelMocks.getOperationModelWith1NumberZero().toBuilder()
                 .result(5d)
                 .build();
         var result = underTest.add(operationModelZero);
@@ -84,12 +86,13 @@ class OperationImplTest {
 
     }
 
+    @DisplayName("add operation successful when OperationModel has 2 Numbers With Decimals")
     @Test
     void substractWhenOperationIsSuccessfulTest() {
-        OperationModel opExpected = operationModel1.toBuilder()
+        OperationModel opExpected = OperationModelMocks.getOperationModelWithFirstNumberGreaterThanSecondNumber().toBuilder()
                 .result(-1d)
                 .build();
-        var result = underTest.substract(operationModel1);
+        var result = underTest.substract(OperationModelMocks.getOperationModelWithFirstNumberGreaterThanSecondNumber());
 
         assertEquals(opExpected.getResult(), result.getResult());
 
